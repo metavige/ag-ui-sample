@@ -17,10 +17,25 @@ import { OpenAI } from 'openai';
 
 export class OpenAIAgent extends AbstractAgent {
   private client: OpenAI;
+  public messages: Message[] = [];
 
   constructor(apiKey?: string) {
     super();
     this.client = new OpenAI({ apiKey: apiKey || process.env.OPENAI_API_KEY });
+  }
+
+  // 添加一個公共方法來運行 agent
+  public runAgent(params: { runId: string, threadId?: string }): Observable<BaseEvent> {
+    const input: RunAgentInput = {
+      runId: params.runId,
+      threadId: params.threadId || `thread_${Date.now()}`,
+      messages: this.messages,
+      tools: [],
+      context: []
+    };
+    
+    // 呼叫受保護的 run 方法並立即執行返回的函數
+    return this.run(input)();
   }
 
   protected run(input: RunAgentInput): RunAgent {
