@@ -50,7 +50,6 @@ export class CustomOpenAIAgent {
       console.log('使用 Ollama API');
       options.baseURL = 'http://localhost:11434/v1';  // ollama 本地服務
       options.apiKey = 'ollama';  // 任意值，因為 ollama 不需要 API key
-      // options.model = 'llama3:8b';  // 使用 llama3 模型
     } else {
       console.log('使用 OpenAI API');
       options.apiKey = apiKey || process.env.OPENAI_API_KEY;
@@ -92,13 +91,14 @@ export class CustomOpenAIAgent {
       } as TextMessageStartEvent);
 
       console.log('發送請求到 OpenAI 或 Ollama...');
-      console.log('使用模型:', process.env.OPENAI_API_KEY === 'ollama' ? 'llama3:8b' : 'gpt-3.5-turbo');
+      // console.log('使用模型:', process.env.OPENAI_API_KEY === 'ollama' ? 'llama3:8b' : 'gpt-3.5-turbo');
+      console.log('使用模型:', process.env.OPENAI_MODEL);
       console.log('訊息:', JSON.stringify(openaiMessages, null, 2));
 
       // Create a streaming completion request
       this.client.chat.completions
         .create({
-          model: process.env.OPENAI_API_KEY === 'ollama' ? 'llama3:8b' : 'gpt-3.5-turbo',
+          model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
           messages: openaiMessages,
           stream: true,
         })

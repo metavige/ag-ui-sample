@@ -8,6 +8,7 @@ dotenv.config();
 
 console.log('程式啟動');
 console.log('環境變數:', { OPENAI_API_KEY: process.env.OPENAI_API_KEY ? '已設定' : '未設定' });
+console.log('MODEL:', { OPENAI_MODEL: process.env.OPENAI_MODEL ? '已設定' : '未設定' });
 
 // Create an instance of our custom agent
 const openAIAgent = new CustomOpenAIAgent();
